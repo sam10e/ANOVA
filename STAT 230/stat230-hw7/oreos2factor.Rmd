@@ -1,0 +1,181 @@
+---
+title: "oreos2factor"
+author: "Sam Tenney"
+date: "October 23, 2018"
+output: html_document
+---
+
+Read in data from https://blades.byu.edu/stat230data/oreos2factor.txt
+
+```{r}
+oreos2 <- read.table(text = "Run,Experiment,Oreo.Type,Milk.Type,Replicate,Weight.Before,Weight.After,Difference
+1,19,Regular,2%,7,11.9,17.48,5.58
+2,44,DoubleStuf,2%,8,16.72,23.53,6.81
+3,49,Golden,Almond,1,12.45,17.41,4.96
+4,58,Golden,Almond,10,12.01,17.32,5.31
+5,27,DoubleStuf,Almond,3,14.58,19.93,5.35
+6,54,Golden,Almond,6,11.94,16.41,4.47
+7,64,Golden,2%,4,11.36,16.87,5.51
+8,36,DoubleStuf,Almond,12,15.4,20.12,4.72
+9,5,Regular,Almond,5,12.31,16.91,4.6
+10,57,Golden,Almond,9,11.77,16.74,4.97
+11,8,Regular,Almond,8,11.43,15.92,4.49
+12,66,Golden,2%,6,11.56,17.82,6.26
+13,21,Regular,2%,9,11.27,17.48,6.21
+14,61,Golden,2%,1,11.66,18.64,6.98
+15,47,DoubleStuf,2%,11,14.55,22.14,7.59
+16,69,Golden,2%,9,11.78,18.47,6.69
+17,7,Regular,Almond,7,11.47,15.78,4.31
+18,11,Regular,Almond,11,12.08,16.33,4.25
+19,43,DoubleStuf,2%,7,14.61,20.92,6.31
+20,15,Regular,2%,3,11.66,16.8,5.14
+21,3,Regular,Almond,3,11.95,16.18,4.23
+22,32,DoubleStuf,Almond,8,15.01,20.3,5.29
+23,25,DoubleStuf,Almond,1,14.15,19.75,5.6
+24,68,Golden,2%,8,11.34,17.97,6.63
+25,46,DoubleStuf,2%,10,16.3,23.7,7.4
+26,70,Golden,2%,10,11.79,18.1,6.31
+27,63,Golden,2%,3,11.39,17.36,5.97
+28,39,DoubleStuf,2%,3,14.67,21.17,6.5
+29,62,Golden,2%,2,11.69,17.42,5.73
+30,40,DoubleStuf,2%,4,14.03,20.68,6.65
+31,65,Golden,2%,5,11.53,18.16,6.63
+32,17,Regular,2%,5,11.66,17.43,5.77
+33,10,Regular,Almond,10,11.74,16.63,4.89
+34,71,Golden,2%,11,11.26,17.41,6.15
+35,2,Regular,Almond,2,11.96,16.42,4.46
+36,60,Golden,Almond,12,11.31,16.44,5.13
+37,52,Golden,Almond,4,11.61,17.24,5.63
+38,30,DoubleStuf,Almond,6,16.43,21.58,5.15
+39,14,Regular,2%,2,12.27,18.1,5.83
+40,9,Regular,Almond,9,11.32,15.67,4.35
+41,55,Golden,Almond,7,11.98,17.5,5.52
+42,1,Regular,Almond,1,11.78,16.43,4.65
+43,34,DoubleStuf,Almond,10,14.25,19.89,5.64
+44,53,Golden,Almond,5,11.72,17.41,5.69
+45,59,Golden,Almond,11,11.61,16.76,5.15
+46,20,Regular,2%,8,11.89,17.36,5.47
+47,35,DoubleStuf,Almond,11,16.11,22.28,6.17
+48,6,Regular,Almond,6,11.77,16.61,4.84
+49,33,DoubleStuf,Almond,9,15.31,20.43,5.12
+50,48,DoubleStuf,2%,12,16.6,23.22,6.62
+51,45,DoubleStuf,2%,9,15.01,21.6,6.59
+52,23,Regular,2%,11,12.46,17.77,5.31
+53,38,DoubleStuf,2%,2,15.33,21.76,6.43
+54,24,Regular,2%,12,12.02,17.35,5.33
+55,13,Regular,2%,1,11.61,17.57,5.96
+56,28,DoubleStuf,Almond,4,15.29,20.2,4.91
+57,26,DoubleStuf,Almond,2,15.31,20.66,5.35
+58,41,DoubleStuf,2%,5,14.78,21.4,6.62
+59,51,Golden,Almond,3,11.42,16.76,5.34
+60,37,DoubleStuf,2%,1,14.67,20.79,6.12
+61,31,DoubleStuf,Almond,7,14.83,20,5.17
+62,22,Regular,2%,10,11.44,16.55,5.11
+63,42,DoubleStuf,2%,6,15.6,22.78,7.18
+64,29,DoubleStuf,Almond,5,15.08,19.79,4.71
+65,67,Golden,2%,7,11.91,18.49,6.58
+66,72,Golden,2%,12,11.37,17.82,6.45
+67,18,Regular,2%,6,11.63,17.1,5.47
+68,50,Golden,Almond,2,11.64,17.2,5.56
+69,56,Golden,Almond,8,11.02,16.96,5.94
+70,12,Regular,Almond,12,11.47,16.56,5.09
+71,4,Regular,Almond,4,11.36,15.96,4.6
+72,16,Regular,2%,4,12.08,16.53,4.45", header = TRUE, sep = ",")
+
+```
+
+Check data to see that it was read in correctly
+
+```{r}
+head(oreos2)
+tail(oreos2)
+str(oreos2)
+```
+
+Reorder levels of cookie factor
+
+```{r}
+oreos2$Oreo.Type <- factor(oreos2$Oreo.Type, levels = c("Regular", "Golden", "DoubleStuf"))
+str(oreos2)
+```
+
+Look at the data (boxplots and dotplots)
+
+```{r}
+boxplot(Difference~Oreo.Type, data=oreos2)
+boxplot(Difference~Milk.Type, data=oreos2)
+boxplot(Difference~Oreo.Type+Milk.Type, data=oreos2)
+
+library(lattice)
+bwplot(Difference~Oreo.Type|Milk.Type, data=oreos2)
+dotplot(Difference~Oreo.Type, data=oreos2)
+dotplot(Difference~Milk.Type, data=oreos2)
+dotplot(Difference~Oreo.Type|Milk.Type, data=oreos2)
+
+```
+
+Summarize the data (mean, sd, # replicates)
+
+```{r}
+aggregate(Difference~Oreo.Type, data=oreos2, FUN = mean)
+aggregate(Difference~Oreo.Type, data=oreos2, FUN = sd)
+aggregate(Difference~Oreo.Type, data=oreos2, FUN = length)
+aggregate(Difference~Milk.Type, data=oreos2, FUN = mean)
+aggregate(Difference~Milk.Type, data=oreos2, FUN = sd)
+aggregate(Difference~Milk.Type, data=oreos2, FUN = length)
+aggregate(Difference~Oreo.Type+Milk.Type, data=oreos2, FUN = mean)
+aggregate(Difference~Oreo.Type+Milk.Type, data=oreos2, FUN = sd)
+aggregate(Difference~Oreo.Type+Milk.Type, data=oreos2, FUN = length)
+
+```
+
+BF[2] ANOVA
+
+```{r}
+oreo2facmod <- aov(Difference~Oreo.Type+Milk.Type+Oreo.Type*Milk.Type, data=oreos2)
+anova(oreo2facmod)
+```
+
+Interaction Plot
+
+```{r}
+interaction.plot(response = oreos2$Difference, x.factor=oreos2$Oreo.Type, trace.factor=oreos2$Milk.Type, ylab="Mean Milk Absorbed (g)", xlab = "", trace.lab = "", main="Interaction Plot")
+
+interaction.plot(response = oreos2$Difference, x.factor=oreos2$Milk.Type, trace.factor=oreos2$Oreo.Type, ylab="Mean Milk Absorbed (g)", xlab = "", trace.lab = "", main="Interaction Plot")
+```
+
+More Interaction Plots
+
+```{r}
+with(oreos2, interaction.plot(response = Difference, x.factor = Milk.Type, trace.factor = Oreo.Type))
+```
+
+Pairwise comparisons
+```{r}
+TukeyHSD(oreo2facmod, which="Oreo.Type:Milk.Type")
+```
+
+Check Assumptions
+1. Calculate Residuals
+```{r}
+oreos2$resids <- resid(oreo2facmod)
+```
+
+2. Index Plot: Check Independence
+```{r}
+plot(oreos2$resids, type="b")
+abline(h=0)
+```
+
+
+3. Normal qq plot: check normality
+```{r}
+qqnorm(oreos2$resids)
+qqline(oreos2$resids)
+```
+
+4. Ratio of sds: check equal variance
+```{r}
+aggregate(Difference~Oreo.Type+Milk.Type, data = oreos2, FUN = sd)
+```
+
