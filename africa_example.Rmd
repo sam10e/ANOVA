@@ -1,0 +1,194 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Read in the data
+
+```{r}
+africa <- read.table(text = "X,higher,percent,section
+10,1,22,1
+30,1,35,1
+10,1,30,1
+30,0,15,1
+10,0,9,1
+10,0,3,1
+30,1,37,1
+30,0,20,1
+10,1,28,1
+30,0,20,1
+10,1,25,1
+30,0,20,1
+10,1,30,1
+10,1,30,1
+30,1,33,1
+30,0,15,1
+10,1,15,1
+30,0,25,1
+30,0,25,1
+10,1,68,1
+30,0,20,1
+30,0,13,1
+10,1,65,1
+10,1,15,1
+10,0,8,1
+10,1,30,1
+30,0,20,1
+10,1,50,1
+10,0,5,1
+10,1,27,1
+10,1,23,1
+30,1,33,1
+10,1,19,2
+30,0,23,2
+30,1,32,2
+10,0,22,2
+10,0,7,2
+30,0,1,2
+10,1,18,2
+30,0,10,2
+30,0,28,2
+30,1,67,2
+10,1,27,2
+30,0,25,2
+30,0,12.5,2
+10,1,30,2
+30,0,20,2
+10,0,2,2
+10,0,3,2
+10,1,20,2
+10,1,20,2
+10,1,18,2
+30,0,20,2
+30,0,10,2
+10,1,20,2
+10,1,50,2
+30,0,12,2
+10,1,15,2
+30,1,35,2
+30,1,60,2
+10,1,27,3
+30,0,20,3
+30,1,44,3
+10,0,15,3
+10,1,10,3
+10,0,20,3
+30,0,15,3
+30,0,12,3
+10,1,25,3
+10,1,30,3
+10,1,40,3
+30,0,15,3
+30,1,82,3
+30,1,33,3
+30,0,25,3
+10,1,20,3
+30,1,65,3
+10,1,25,3
+30,0,15,3
+30,0,15,3
+30,0,5,3
+30,0,17,3
+30,0,18,3
+10,0,50,3
+30,0,10,3
+10,1,15,3
+30,0,5,3
+10,1,25,3
+30,0,15,3
+30,0,25,3
+10,1,15,3
+30,0,20,3
+10,1,50,3
+10,1,15,3
+30,0,15,3
+30,0,15,3
+30,1,40,3
+10,1,10,3
+30,0,15,3
+10,1,23,3
+30,0,23,3
+30,1,25,3
+30,0,15,3
+10,0,5,3
+10,1,17,3
+30,0,25,3
+30,0,23,3
+10,1,20,3
+10,1,15,3", header = TRUE, sep = ",")
+```
+
+
+```{r}
+africa$X <- factor(africa$X)
+temphigher <- factor(africa$higher, levels=c(1,0), labels=c("Higher", "Lower"))
+
+table(africa$higher, temphigher)
+
+africa$higher <- temphigher
+```
+
+
+Create table
+You should put the explanatory variable first (and the response second)
+
+```{r}
+africatab <- table(africa$X, africa$higher)
+```
+
+
+Make proportions table margins
+
+```{r}
+addmargins(africatab)
+```
+
+
+Calculate proportion percentages for each row and column
+
+```{r}
+prop.table(africatab, margin=1) # calculates row proportions -- what we want
+
+prop.table(africatab, margin=2) # calculates proporitions within columns
+```
+
+
+Perform a binomial test (calculates confidence intervals)
+
+```{r}
+apply(africatab, 1, binom.test)
+```
+
+
+Calculate the p-value
+
+```{r}
+1-pchisq(29.86, 1)
+```
+
+
+Perform a chi square test with one function
+
+```{r}
+# this does the full calculation -- use this one
+chisq.test(africatab, correct=FALSE)
+
+# chisq test WITH continuity correction -- for very small sample sizes
+chisq.test(africatab, correct=TRUE)
+```
+
+
+If our sample size is not large, we need to do Fisher's Exact Test (FET)
+
+```{r}
+fisher.test(africatab)
+```
+
+
+Calculate the CI for difference in proportions
+
+```{r}
+prop.test(africatab, correct = FALSE)
+prop.test(africatab)
+```
+

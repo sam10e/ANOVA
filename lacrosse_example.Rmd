@@ -1,0 +1,152 @@
+---
+title: "Lacrosse"
+author: "Sam Tenney"
+date: "December 11, 2018"
+output: html_document
+---
+
+Read in the data
+
+```{r}
+lacrosse <- read.table(text = 
+"       1       1      1033.120
+       1       1      1348.208
+       1       1      1071.822
+       1       1       976.702
+       1       1       990.100
+       1       1      1099.040
+       1       1      1199.141
+       1       1      1240.194
+       1       1      1314.289
+       1       1      1388.383
+       1       2       894.646
+       1       2       902.892
+       1       2      1010.010
+       1       2       897.587
+       1       2       944.155
+       1       2       946.290
+       1       2       960.622
+       1       2      1018.716
+       1       2      1062.932
+       1       2      1107.148
+       2       1      1077.465
+       2       1      1067.588
+       2       1       881.427
+       2       1       875.805
+       2       1      1512.677
+       2       1      1389.608
+       2       1       866.175
+       2       1      1143.009
+       2       1      1168.418
+       2       1      1193.827
+       2       2      1113.792
+       2       2      1087.070
+       2       2      1188.106
+       2       2       920.193
+       2       2      1070.711
+       2       2       918.574
+       2       2      1117.802
+       2       2       978.509
+       2       2       934.917
+       2       2       891.326
+       3       1       613.375
+       3       1      1144.626
+       3       1      1013.652
+       3       1       835.126
+       3       1       951.132
+       3       1       750.245
+       3       1       719.553
+       3       1       852.215
+       3       1       847.431
+       3       1       842.646
+       3       2      1526.328
+       3       2      1551.818
+       3       2      1572.681
+       3       2      1544.867
+       3       2      1427.717
+       3       2      1356.253
+       3       2      1483.588
+       3       2      1238.108
+       3       2      1099.916
+       3       2       961.724
+       4       1      1387.522
+       4       1      1332.813
+       4       1      1142.812
+       4       1      1030.647
+       4       1      1271.285
+       4       1      1338.537
+       4       1      1323.765
+       4       1      1178.170
+       4       1      1133.540
+       4       1      1088.910
+       4       2      1710.564
+       4       2      1543.174
+       4       2      1652.740
+       4       2      1522.275
+       4       2      1336.061
+       4       2      1512.203
+       4       2      1773.826
+       4       2      1400.610
+       4       2      1304.719
+       4       2      1208.829", header = FALSE, sep = "")
+
+colnames(lacrosse) <- c("helmet", "site", "gadd")
+
+```
+
+
+Check the data
+
+```{r}
+lacrosse$helmet <- as.factor(lacrosse$helmet)
+lacrosse$site <- as.factor(lacrosse$site)
+
+str(lacrosse)
+head(lacrosse)
+tail(lacrosse)
+```
+
+
+Look at the data
+
+```{r}
+boxplot(gadd~helmet, data = lacrosse)
+library(lattice)
+dotplot(gadd~helmet, data = lacrosse)
+
+```
+
+
+Calculate summary statistics
+
+```{r}
+aggregate(gadd~helmet, data = lacrosse, FUN = mean)
+aggregate(gadd~helmet, data = lacrosse, FUN = sd)
+aggregate(gadd~helmet, data = lacrosse, FUN = length)
+```
+
+
+Fit the ANOVA <- helmet
+
+```{r}
+lacrosseMod <- aov(gadd~helmet, data = lacrosse)
+anova(lacrosseMod)
+```
+
+
+Find estimates
+
+```{r}
+grandMean <- mean(lacrosse$gadd)
+groupMeans <- aggregate(gadd~helmet, data = lacrosse, FUN = mean)
+groupMeans - grandMean
+```
+
+Get Estimates without doing it "by hand"
+
+```{r}
+lacrosseLM <- lm(gadd~helmet, data = lacrosse)
+anova(lacrosseLM)
+summary(lacrosseLM)
+```
+
